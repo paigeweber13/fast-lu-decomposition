@@ -53,6 +53,7 @@ def prepare_args(args: Args) -> Args:
         args.lower_limit = args.step
     args.lower_limit = int(float(args.lower_limit))
     args.step = int(float(args.step))
+    return args
 
 
 def generate_matrix(n: int) -> Matrix:
@@ -77,7 +78,7 @@ def matrix_as_cpp_literal(matrix: Matrix) -> str:
 
 def main():
     # Process args
-    args = process_args(create_argparser().parse_args())
+    args = prepare_args(create_argparser().parse_args())
 
     # Build header file with text in it
     output_text = HPP_BOILERPLATE \
