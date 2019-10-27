@@ -1,6 +1,7 @@
 import argparse
 import random
 
+from typing import Generator
 from typing import List
 
 Matrix = List[List[float]]
@@ -70,6 +71,17 @@ def prepare_args(args: Args) -> Args:
     return args
 
 
+def matrix_sizes(args: Args) -> Generator[int, None, None]:
+    if args.exponential:
+        n = args.lower_limit
+        while n <= args.upper_limit:
+            yield n
+            n *= args.ratio
+    else:
+        for n in range(args.lower_limit, args.upper_limit, args.step):
+            yield n
+
+
 def generate_matrix(n: int) -> Matrix:
     result = []
     for i in range(n):
@@ -98,7 +110,7 @@ def main():
     output_text = HPP_BOILERPLATE \
                 + VECTOR_OF_MATRICES_START \
 
-    for n in range(args.lower_limit, args.upper_limit, args.step):
+    for n in matrix_sizes(args):
         output_text += matrix_as_cpp_literal(generate_matrix(n))
 
     output_text += VECTOR_OF_MATRICES_END
