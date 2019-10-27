@@ -110,12 +110,16 @@ def main():
     output_text = HPP_BOILERPLATE \
                 + VECTOR_OF_MATRICES_START \
 
+    print('generating matrices of sizes:', end=' ')
     for n in matrix_sizes(args):
+        print(n, end=' ')
         output_text += matrix_as_cpp_literal(generate_matrix(n))
+    print()
 
     output_text += VECTOR_OF_MATRICES_END
 
     # Output that text
+    print('outputing C++ formatted header file to:', args.output_file)
     with open(args.output_file, 'w') as f:
         f.write(output_text)
 
