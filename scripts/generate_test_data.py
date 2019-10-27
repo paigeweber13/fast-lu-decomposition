@@ -1,3 +1,8 @@
+"""
+scrapping this for now. We'll have to generate the matrices at runtime unless
+we want to store hundreds of GB of text
+"""
+
 import argparse
 import random
 
