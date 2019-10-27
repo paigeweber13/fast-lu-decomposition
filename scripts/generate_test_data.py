@@ -1,6 +1,8 @@
 import argparse
 import random
 
+from typing import List
+
 HPP_BOILERPLATE = "#pragma once\n" \
     + "\n" \
     + "#include <boost/align/aligned_allocator.hpp>\n" \
@@ -34,7 +36,7 @@ def create_argparser() -> argparse.ArgumentParser:
     return parser
 
 
-def generate_matrix(n: int) -> [[]]:
+def generate_matrix(n: int) -> List[List[float]]:
     result = []
     for i in range(n):
         result.append([])
@@ -43,7 +45,7 @@ def generate_matrix(n: int) -> [[]]:
     return result
 
 
-def matrix_as_cpp_literal(matrix: [[]]) -> str:
+def matrix_as_cpp_literal(matrix: List[List[float]]) -> str:
     result =  '{\n'
     for i in range(len(matrix)):
         result += '{'
@@ -55,16 +57,18 @@ def matrix_as_cpp_literal(matrix: [[]]) -> str:
 
 
 def main():
+    # Process args
     args = create_argparser().parse_args()
 
-    # convert to integers, but convert to float first to allow use of
-    # scientific notation like '1e6'
+    ## convert to integers, but convert to float first to allow use of
+    ## scientific notation like '1e6'
     args.upper_limit = int(float(args.upper_limit))
     args.lower_limit = int(float(args.lower_limit))
     if(args.step == None):
         args.step = args.upper_limit/10
     args.step = int(float(args.step))
 
+    # Build header file with text in it
     output_text = HPP_BOILERPLATE \
                 + VECTOR_OF_MATRICES_START \
 
@@ -73,6 +77,7 @@ def main():
 
     output_text += VECTOR_OF_MATRICES_END
 
+    # Output that text
     print(output_text)
 
 
