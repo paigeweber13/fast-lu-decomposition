@@ -110,11 +110,10 @@ def main():
     output_text = HPP_BOILERPLATE \
                 + VECTOR_OF_MATRICES_START \
 
-    print('generating matrices of sizes:', end=' ')
+    print('generating matrices of sizes:')
     for n in matrix_sizes(args):
-        print(n, end=' ')
+        print(n)
         output_text += matrix_as_cpp_literal(generate_matrix(n))
-    print()
 
     output_text += VECTOR_OF_MATRICES_END
 
