@@ -1,5 +1,5 @@
-# Executable
-lu-decomp
+# output for conan
+build
 
 # Prerequisites
 *.d
@@ -30,6 +30,7 @@ lu-decomp
 *.lib
 
 # Executables
+lu-decomp
 *.exe
 *.out
 *.app
