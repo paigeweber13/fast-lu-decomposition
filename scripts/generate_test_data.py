@@ -3,6 +3,8 @@ import random
 
 from typing import List
 
+Matrix = List[List[float]]
+
 HPP_BOILERPLATE = "#pragma once\n" \
     + "\n" \
     + "#include <boost/align/aligned_allocator.hpp>\n" \
@@ -36,7 +38,7 @@ def create_argparser() -> argparse.ArgumentParser:
     return parser
 
 
-def generate_matrix(n: int) -> List[List[float]]:
+def generate_matrix(n: int) -> Matrix:
     result = []
     for i in range(n):
         result.append([])
@@ -45,7 +47,7 @@ def generate_matrix(n: int) -> List[List[float]]:
     return result
 
 
-def matrix_as_cpp_literal(matrix: List[List[float]]) -> str:
+def matrix_as_cpp_literal(matrix: Matrix) -> str:
     result =  '{\n'
     for i in range(len(matrix)):
         result += '{'
@@ -64,7 +66,7 @@ def main():
     ## scientific notation like '1e6'
     args.upper_limit = int(float(args.upper_limit))
     args.lower_limit = int(float(args.lower_limit))
-    if(args.step == None):
+    if args.step == None:
         args.step = args.upper_limit/10
     args.step = int(float(args.step))
 
@@ -78,7 +80,8 @@ def main():
     output_text += VECTOR_OF_MATRICES_END
 
     # Output that text
-    print(output_text)
+    with open(args.output_file, 'w') as f:
+        f.write(output_text)
 
 
 if(__name__ == '__main__'):
