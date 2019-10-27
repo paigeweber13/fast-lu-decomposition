@@ -1,6 +1,8 @@
 #pragma once
 
 #include <boost/align/aligned_allocator.hpp>
+#include <stdlib.h>
+#include <time.h>
 #include <vector>
 
 using namespace std;
@@ -10,4 +12,4 @@ using namespace std;
 
 vector<vector<
   float, boost::alignment::aligned_allocator<float, 32> 
->> generate_matrix(size_t k);
+>> generate_matrix(size_t n);
