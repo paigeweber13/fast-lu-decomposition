@@ -1,5 +1,23 @@
 import argparse
 
+HPP_BOILERPLATE = "#pragma once\n" \
+    + "\n" \
+    + "#include <boost/align/aligned_allocator.hpp>\n" \
+    + "#include <vector>\n" \
+    + "\n" \
+    + "using namespace std;\n" \
+    + "\n"
+
+
+VECTOR_OF_MATRICES_START = "\n" \
+    + "const vector<vector<vector<\n" \
+    + "             float, boost::alignment::aligned_allocator<float, 32>\n" \
+    + ">>> test_matrices({\n"
+
+
+VECTOR_OF_MATRICES_END = "});\n"
+
+
 def create_argparser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description='Generate square ' +\
         'matrices to test speed of LU decomposition')
@@ -10,7 +28,7 @@ def create_argparser() -> argparse.ArgumentParser:
     parser.add_argument('-s', '--step', dest='step', default=None, nargs='?',
                         help='Step in dimension of generated matrices')
     parser.add_argument('-o', '--output_file', dest='output_file',
-                        default='test_data.hpp', nargs='?',
+                        default='test_matrices.hpp', nargs='?',
                         help='File to save output to')
     return parser
 
@@ -22,7 +40,8 @@ def main():
     if(args.step == None):
         args.step = float(args.upper_limit)/10
 
-    print(args)
+    output_text = HPP_BOILERPLATE \
+                + VECTOR_OF_MATRICES_DECLARATION
 
 
 if(__name__ == '__main__'):
