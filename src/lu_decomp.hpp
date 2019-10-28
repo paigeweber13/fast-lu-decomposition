@@ -1,5 +1,7 @@
 #pragma once
 
+#include <tuple>
+
 #include "matrix.hpp"
 
 using namespace std;
