@@ -27,4 +27,4 @@ clean:
 	rm -f $(EXEC) $(OBJS) build
 
 test: $(EXEC)
-	./lu-decomp
+	./$(EXEC)
