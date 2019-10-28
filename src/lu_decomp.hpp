@@ -4,4 +4,4 @@
 
 using namespace std;
 
-tuple<Matrix, Matrix> lu_factorize(Matrix)
+tuple<Matrix, Matrix> lu_factorize(Matrix);
