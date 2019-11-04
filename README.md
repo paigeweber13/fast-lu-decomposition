@@ -5,8 +5,9 @@ machine learning and scientific computing. Created as a term project for ITCS
 
 ## Buiding
 ### Prerequisites
- * This project uses (conan)[https://docs.conan.io/en/latest/installation.html]
+ * This project uses [conan](https://docs.conan.io/en/latest/installation.html)
    for package management. make sure you have it installed.
+     * the easiest way to install it is with pip. Run `pip install conan`
  * GNU Make is used for building
 
 ### Instructions
@@ -18,7 +19,8 @@ Clone this repository and run the following commands where it's cloned:
     cd ..
     make
 
-you may also run `make test` to compile and run in one command.
+You may then run using `./lu-decomp`. Alternatively, you may also run `make
+test` to compile and run in one command.
 
 ## Guidance from professor:
  * Problem: Solve Ax = b.
