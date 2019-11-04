@@ -25,8 +25,9 @@ pair<Matrix, Matrix> lu_factorize(Matrix m){
         // small numbers (in the order of 10e-8 and 10e-9). I believe this is
         // because of rounding error.
 
-        // we will need to test the results of this to see if we're doing this
-        // right
+        // alternative: round everything to like 6 decimal places?
+
+        // this has been run through some basic tests and seems to work.
         if(k <= j)
           u[i][k] = 0;
         else
