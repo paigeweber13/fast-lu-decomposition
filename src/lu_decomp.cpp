@@ -1,7 +1,7 @@
 #include "lu_decomp.hpp"
 
-tuple<Matrix, Matrix> lu_factorize(Matrix matrix){
+pair<Matrix, Matrix> lu_factorize(Matrix matrix){
   Matrix l;
   Matrix u;
-  return tuple<Matrix, Matrix>(l, u);
+  return pair<Matrix, Matrix>(l, u);
 }
