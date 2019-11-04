@@ -22,6 +22,10 @@ Clone this repository and run the following commands where it's cloned:
 You may then run using `./lu-decomp`. Alternatively, you may also run `make
 test` to compile and run in one command.
 
+## Next steps:
+ * create model
+ * time, profile basic code
+
 ## Guidance from professor:
  * Problem: Solve Ax = b.
  * Build two triangular matrices L and U such that A = LU.
