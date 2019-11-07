@@ -38,3 +38,13 @@ pair<Matrix, Matrix> lu_factorize(Matrix m){
 
   return pair<Matrix, Matrix>(l, u);
 }
+
+bool check_lu_correctness(Matrix input, pair<Matrix, Matrix> lu){
+}
+
+bool compare_matrix_with_boost_matrix(Matrix a, ub::matrix<float> b){
+}
+
+ub::matrix<float> copy_matrix_to_boost_matrix(Matrix input){
+}
+
