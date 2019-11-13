@@ -1,4 +1,4 @@
-#include "generate_test_matrices.hpp"
+#include "matrix.hpp"
 
 Matrix generate_matrix(size_t n){
   Matrix matrix(n);
