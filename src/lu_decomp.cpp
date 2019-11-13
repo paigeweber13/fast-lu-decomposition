@@ -41,29 +41,3 @@ pair<Matrix, Matrix> lu_factorize(Matrix m){
 
 bool check_lu_correctness(Matrix input, pair<Matrix, Matrix> lu){
 }
-
-bool compare_matrix_with_boost_matrix(Matrix a, ub::matrix<float> b){
-  bool same = true;
-  size_t num_errors = 0;
-  for (size_t i = 0; i < a.size(); ++ i){
-    for (size_t j = 0; j < a[0].size(); ++ j){
-      if(a[i][j] != b(i, j)){
-        same = false;
-        cout << "matrices differ at index " << i << ", " << j << ".";
-        cout << "a[i][j] = " << a[i][j] << " b[i][j] " << b(i, j) << endl;
-        num_errors++;
-      }
-      if (num_errors > 10) break;
-    }
-  }
-  return same;
-}
-
-ub::matrix<float> copy_matrix_to_boost_matrix(Matrix input){
-  ub::matrix<float> m(input.size(), input[0].size());
-  for (size_t i = 0; i < m.size1 (); ++ i)
-    for (size_t j = 0; j < m.size2 (); ++ j)
-      m (i, j) = input[i][j];
-  return m;
-}
-

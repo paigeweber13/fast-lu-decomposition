@@ -1,41 +1,14 @@
-#include <iomanip>
 #include <iostream>
 
-#include "generate_test_matrices.hpp"
+#include "matrix.hpp"
 #include "lu_decomp.hpp"
 
 using namespace std;
 
 void test();
-bool compare_matrices(Matrix a, Matrix b);
 
 int main(){
   test();
-}
-
-void print_matrix(Matrix m){
-  for(size_t i = 0; i < m.size(); i++){
-    for(size_t j = 0; j < m[0].size(); j++){
-      cout << setw(10) << setprecision(4) << m[i][j] << ", ";
-    }
-    cout << endl;
-  }
-  cout << endl;
-}
-
-bool compare_matrices(Matrix a, Matrix b){
-  if(a.size() != b.size() || a[0].size() != b[0].size())
-    return false;
-
-  for(size_t i = 0; i < a.size(); i++){
-    for(size_t j = 0; j < a[0].size(); j++){
-      if(a[i][j] != b[i][j]){
-        // cout << "a[i][j]: " << a[i][j] << " b[i][j]: " << b[i][j] << endl;
-        return false;
-      }
-    }
-  }
-  return true;
 }
 
 void test(){
