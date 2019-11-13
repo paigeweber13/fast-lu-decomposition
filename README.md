@@ -7,7 +7,7 @@ machine learning and scientific computing. Created as a term project for ITCS
 ### Prerequisites
  * This project uses [conan](https://docs.conan.io/en/latest/installation.html)
    for package management. make sure you have it installed.
-     * the easiest way to install it is with pip. Run `pip install conan`
+     * the easiest way to install it is with pip. Run `pip3 install conan`
  * GNU Make is used for building
 
 ### Instructions
