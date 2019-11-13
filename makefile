@@ -24,7 +24,7 @@ assembly: $(FILES)
 	$(CXX) $(CXXFLAGS) $(CXXASSEMBLYFLAGS) $(FILES)
 
 clean:
-	rm -rf $(EXEC) $(OBJS) build
+	rm -f $(EXEC) $(OBJS)
 
 test: $(EXEC)
 	./$(EXEC)
