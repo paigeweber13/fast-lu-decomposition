@@ -21,3 +21,4 @@ bool compare_matrix_with_boost_matrix(Matrix a, ub::matrix<float> b);
 ub::matrix<float> copy_matrix_to_boost_matrix(Matrix input);
 Matrix generate_matrix(size_t n);
 void print_matrix(Matrix m);
+void print_matrix(ub::matrix<float> m);

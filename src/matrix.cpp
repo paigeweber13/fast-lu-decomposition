@@ -64,3 +64,13 @@ void print_matrix(Matrix m){
   }
   cout << endl;
 }
+
+void print_matrix(ub::matrix<float> m){
+  for(size_t i = 0; i < m.size1(); i++){
+    for(size_t j = 0; j < m.size2(); j++){
+      cout << setw(10) << setprecision(4) << m(i, j) << ", ";
+    }
+    cout << endl;
+  }
+  cout << endl;
+}
