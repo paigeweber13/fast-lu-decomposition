@@ -13,38 +13,28 @@ int main(){
 
 void test(){
   auto m = generate_matrix(8);
+  auto m_ublas = copy_matrix_to_boost_matrix(m);
   cout << "original matrix:" << endl;
   print_matrix(m);
 
-  auto lu = lu_factorize(m);
-  auto l = lu.first;
-  auto u = lu.second;
-  cout << "lower diagonal:" << endl;
-  print_matrix(l);
-  cout << "upper diagonal:" << endl;
-  print_matrix(u);
+  lu_factorize(m);
+  cout << "lu factorized:" << endl;
+  print_matrix(m);
+
+  cout << "correctly factorized? " << check_lu_correctness(m_ublas, m) << endl;
 
 
   m = {{1, 1, -1},
        {1, -2, 3},
        {2, 3, 1}};
-  Matrix expected_l = {{1, 0, 0},
-                       {1, 1, 0},
-                       {2, -1./3., 1}};
-  Matrix expected_u = {{1, 1, -1},
-                       {0, -3, 4},
-                       {0, 0, 13./3.}};
+  Matrix expected_lu = {{1, 1, -1},
+                        {1, -3, 4},
+                        {2, -1./3., 13./3.}};
   cout << "original matrix:" << endl;
   print_matrix(m);
 
-  lu = lu_factorize(m);
-  l = lu.first;
-  u = lu.second;
-  cout << "lower diagonal:" << endl;
-  print_matrix(l);
-  cout << "upper diagonal:" << endl;
-  print_matrix(u);
-  cout << "result == expected?" << endl;
-  cout << "lower: " << compare_matrices(l, expected_l) << " ";
-  cout << "upper: " << compare_matrices(u, expected_u) << endl;
+  lu_factorize(m);
+  cout << "lu factorized:" << endl;
+  print_matrix(m);
+  cout << "result == expected? " << compare_matrices(m, expected_lu) << endl;
 }
