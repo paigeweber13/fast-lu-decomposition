@@ -12,7 +12,7 @@ int main(){
 }
 
 void randomized_tests(){
-  printf("matrix size,correctly factorized?");
+  printf("matrix size,correctly factorized?\n");
   for(size_t i = 2; i < 2500; i *= 2){
     auto m = generate_matrix(i);
     auto m_ublas = copy_matrix_to_boost_matrix(m);
