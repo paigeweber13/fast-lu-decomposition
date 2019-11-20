@@ -33,12 +33,17 @@ bool compare_matrices(Matrix a, Matrix b){
 bool compare_matrix_with_boost_matrix(Matrix a, ub::matrix<float> b){
   bool same = true;
   size_t num_errors = 0;
-  float threshold = 1e-4;
+  float threshold_percent = 0.1;
+  float threshold, diff;
 
   for (size_t i = 0; i < a.size(); ++ i){
     for (size_t j = 0; j < a[0].size(); ++ j){
-      if(abs(a[i][j] - b(i, j)) > threshold){
+      diff = abs(a[i][j] - b(i, j));
+      threshold = abs(a[i][j] * threshold_percent);
+      if(diff > threshold){
         same = false;
+        cout << "difference: " << diff << endl;
+        cout << "threshold: " << threshold << endl;
         cout << "matrices differ at index " << i << ", " << j << ".";
         cout << "a[i][j] = " << a[i][j] << " b[i][j] " << b(i, j) << endl;
         num_errors++;
