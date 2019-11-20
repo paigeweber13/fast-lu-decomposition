@@ -11,20 +11,21 @@ int main(){
   test();
 }
 
+void randomized_tests(){
+  printf("matrix size,correctly factorized?");
+  for(size_t i = 2; i < 2500; i *= 2){
+    auto m = generate_matrix(i);
+    auto m_ublas = copy_matrix_to_boost_matrix(m);
+
+    lu_factorize(m);
+
+    auto correct = check_lu_correctness(m_ublas, m);
+    printf("%lu,%i\n", i, correct);
+  }
+}
+
 void test(){
-  auto m = generate_matrix(8);
-  auto m_ublas = copy_matrix_to_boost_matrix(m);
-  cout << "original matrix:" << endl;
-  print_matrix(m);
-
-  lu_factorize(m);
-  cout << "lu factorized:" << endl;
-  print_matrix(m);
-
-  cout << "correctly factorized? " << check_lu_correctness(m_ublas, m) << endl;
-
-
-  m = {{1, 1, -1},
+  Matrix m = {{1, 1, -1},
        {1, -2, 3},
        {2, 3, 1}};
   Matrix expected_lu = {{1, 1, -1},
@@ -37,4 +38,6 @@ void test(){
   cout << "lu factorized:" << endl;
   print_matrix(m);
   cout << "result == expected? " << compare_matrices(m, expected_lu) << endl;
+
+  randomized_tests();
 }
