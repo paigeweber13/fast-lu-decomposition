@@ -6,9 +6,9 @@ Matrix generate_matrix(size_t n){
   srand(time(NULL));
   for (size_t i = 0; i < n; i++){
     matrix[i] =
-      vector<float, boost::alignment::aligned_allocator<float, 32>>(n);
+      vector<double, boost::alignment::aligned_allocator<double, 32>>(n);
     for (size_t j = 0; j < n; j++){
-      matrix[i][j] = float(rand()) / float(RAND_MAX);
+      matrix[i][j] = double(rand()) / double(RAND_MAX);
     }
   }
 
@@ -30,11 +30,11 @@ bool compare_matrices(Matrix a, Matrix b){
   return true;
 }
 
-bool compare_matrix_with_boost_matrix(Matrix a, ub::matrix<float> b){
+bool compare_matrix_with_boost_matrix(Matrix a, ub::matrix<double> b){
   bool same = true;
   size_t num_errors = 0;
-  float threshold_percent = 0.1;
-  float threshold, diff;
+  double threshold_percent = 0.1;
+  double threshold, diff;
 
   for (size_t i = 0; i < a.size(); ++ i){
     for (size_t j = 0; j < a[0].size(); ++ j){
@@ -42,10 +42,10 @@ bool compare_matrix_with_boost_matrix(Matrix a, ub::matrix<float> b){
       threshold = abs(a[i][j] * threshold_percent);
       if(diff > threshold){
         same = false;
-        cout << "difference: " << diff << endl;
-        cout << "threshold: " << threshold << endl;
         cout << "matrices differ at index " << i << ", " << j << ".";
         cout << "a[i][j] = " << a[i][j] << " b[i][j] " << b(i, j) << endl;
+        cout << "difference: " << diff << endl;
+        cout << "threshold: " << threshold << endl;
         num_errors++;
       }
       if (num_errors > 10) break;
@@ -54,8 +54,8 @@ bool compare_matrix_with_boost_matrix(Matrix a, ub::matrix<float> b){
   return same;
 }
 
-ub::matrix<float> copy_matrix_to_boost_matrix(Matrix input){
-  ub::matrix<float> m(input.size(), input[0].size());
+ub::matrix<double> copy_matrix_to_boost_matrix(Matrix input){
+  ub::matrix<double> m(input.size(), input[0].size());
   for (size_t i = 0; i < m.size1 (); ++ i)
     for (size_t j = 0; j < m.size2 (); ++ j)
       m (i, j) = input[i][j];
@@ -72,7 +72,7 @@ void print_matrix(Matrix m){
   cout << endl;
 }
 
-void print_matrix(ub::matrix<float> m){
+void print_matrix(ub::matrix<double> m){
   for(size_t i = 0; i < m.size1(); i++){
     for(size_t j = 0; j < m.size2(); j++){
       cout << setw(10) << setprecision(4) << m(i, j) << ", ";

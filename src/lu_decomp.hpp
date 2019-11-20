@@ -9,4 +9,4 @@ using namespace std;
 namespace ub = boost::numeric::ublas;
 
 void lu_factorize(Matrix &m);
-bool check_lu_correctness(ub::matrix<float> input, Matrix lu);
+bool check_lu_correctness(ub::matrix<double> input, Matrix lu);

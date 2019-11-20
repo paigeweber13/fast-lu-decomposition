@@ -12,14 +12,14 @@
 using namespace std;
 namespace ub = boost::numeric::ublas;
 
-// note: a matrix of floats of size 32e9 will require about 128GB to represent
+// note: a matrix of doubles of size 16e9 will require about 128GB to represent
 // in memory
 
 using Matrix = std::vector<std::vector<
-                 float, boost::alignment::aligned_allocator<float, 32> >>;
+                 double, boost::alignment::aligned_allocator<double, 32> >>;
 bool compare_matrices(Matrix a, Matrix b);
-bool compare_matrix_with_boost_matrix(Matrix a, ub::matrix<float> b);
-ub::matrix<float> copy_matrix_to_boost_matrix(Matrix input);
+bool compare_matrix_with_boost_matrix(Matrix a, ub::matrix<double> b);
+ub::matrix<double> copy_matrix_to_boost_matrix(Matrix input);
 Matrix generate_matrix(size_t n);
 void print_matrix(Matrix m);
-void print_matrix(ub::matrix<float> m);
+void print_matrix(ub::matrix<double> m);

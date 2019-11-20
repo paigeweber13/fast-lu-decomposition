@@ -1,7 +1,7 @@
 #include "lu_decomp.hpp"
 
 void lu_factorize(Matrix &m){
-  float diag, target, multiplier;
+  double diag, target, multiplier;
 
   for (size_t j = 0; j < m[0].size(); j++){
     diag = m[j][j];
@@ -20,7 +20,7 @@ void lu_factorize(Matrix &m){
   }
 }
 
-bool check_lu_correctness(ub::matrix<float> input, Matrix lu){
+bool check_lu_correctness(ub::matrix<double> input, Matrix lu){
   ub::lu_factorize(input);
   return compare_matrix_with_boost_matrix(lu, input);
 }
