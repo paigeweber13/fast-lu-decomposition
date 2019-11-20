@@ -11,13 +11,23 @@ void lu_factorize(Matrix &m){
 
       target = m[i][j];
       multiplier = -target/diag;
-      m[i][j] = -multiplier;
+      // printf("column j: %lu\n", j);
+      // printf("target: %f, mutiplier: %f\n", target, multiplier);
 
       for (size_t k = j; k < m[0].size(); k++){
         // this for loop will do everything above the diagonal for the current
         // row
+        // printf("  i, k: %lu, %lu\n", i, k);
+        // printf("  old m[i][k]: %f\n", m[i][k]);
+        // printf("  m[j][k]: %f,  multiplier: %f, m[i][k]: %f\n", 
+              //  m[j][k], multiplier, m[i][k]);
         m[i][k] = m[j][k] * multiplier + m[i][k];
+        // printf("  new m[i][k]: %f\n", m[i][k]);
       }
+
+      // printf("before setting m[i][j]: %f\n", m[i][j]);
+      m[i][j] = -multiplier;
+      // printf("after setting m[i][j]: %f\n", m[i][j]);
     }
   }
 }
