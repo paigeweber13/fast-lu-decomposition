@@ -2,6 +2,7 @@
 
 #include <boost/align/aligned_allocator.hpp>
 #include <boost/numeric/ublas/lu.hpp>
+#include <cmath>
 #include <iomanip>
 #include <iostream>
 #include <time.h>
