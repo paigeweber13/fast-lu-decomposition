@@ -5,10 +5,12 @@
 
 using namespace std;
 
-void test();
+void basic_test();
+void randomized_tests();
 
 int main(){
-  test();
+  basic_test();
+  randomized_tests();
 }
 
 void randomized_tests(){
@@ -24,7 +26,7 @@ void randomized_tests(){
   }
 }
 
-void test(){
+void basic_test(){
   Matrix m = {{1, 1, -1},
        {1, -2, 3},
        {2, 3, 1}};
@@ -38,6 +40,4 @@ void test(){
   cout << "lu factorized:" << endl;
   print_matrix(m);
   cout << "result == expected? " << compare_matrices(m, expected_lu) << endl;
-
-  randomized_tests();
 }
