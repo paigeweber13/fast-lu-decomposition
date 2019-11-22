@@ -34,3 +34,8 @@ lu-decomp
 *.exe
 *.out
 *.app
+
+# mamba files
+*.sh.o*
+*.sh.e*
+
