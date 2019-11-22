@@ -1,3 +1,4 @@
+#include <chrono>
 #include <iostream>
 
 #include "matrix.hpp"
@@ -7,10 +8,30 @@ using namespace std;
 
 void basic_test();
 void randomized_tests();
+void time_tests();
 
 int main(){
-  basic_test();
-  randomized_tests();
+  // basic_test();
+  // randomized_tests();
+  time_tests();
+}
+
+void time_tests(){
+  printf("matrix size,time (ms),\n");
+  for(size_t i = 2; i < 1e4; i *= 2){
+    auto m = generate_matrix(i);
+
+    auto start_time = chrono::high_resolution_clock::now();
+    lu_factorize(m);
+    auto end_time = chrono::high_resolution_clock::now();
+    auto raw_duration = chrono::duration_cast<chrono::nanoseconds>(
+        end_time - start_time).count();
+
+    const double nanoseconds_to_seconds = 1e-9;
+    const double nanoseconds_to_milliseconds = 1e-6;
+    double duration = double(raw_duration) * nanoseconds_to_milliseconds;
+    printf("%lu,%f\n", i, duration);
+  }
 }
 
 void randomized_tests(){
