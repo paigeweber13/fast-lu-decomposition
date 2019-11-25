@@ -1,0 +1,40 @@
+flops:
+ - compute multiplier for each row and column: n^2
+ - multiply and add for every entry: 2n^2
+ - invert mul for lower matrix: n^2
+
+so for each entry, doing 4 flop
+
+mem:
+ - read 2 for mul per entry: 2n^2
+ - read above for mull/add: n^2
+ - read/write self: n^2
+ - write mul once: n^2 (could be combined with one of the reads above for a 
+   r/w)
+
+so for each entry, doing 2*(datatype size) read/write
+
+simplified function for matrix of size n:
+flops: 4n^2
+r/w mem access: 2n^2 * (datatype size)
+
+Theoretical entries per second
+ - (flops/s) / (flops per entry)
+ - (r/w bandwidth) / (r/w memops per entry)
+
+on CPU:
+ - using broadwell cores:
+    mba-c5.uncc.edu
+    mba-c6.uncc.edu
+    mba-c7.uncc.edu
+    mba-c8.uncc.edu
+ - measured values:
+   - 1.7 TFLOPS
+   - 136 GB/s 
+ - entries/s flop limit = 1.7e12/4
+                        = 425e9 entries/second
+                        = 425 Giga-entries/second
+ - entries/s mem limit = 136e9/(2 * datatype_size)
+                       = 136e9/16
+                       = 8.5e9 entries/second
+                       = 8.5 Giga-entries/second
