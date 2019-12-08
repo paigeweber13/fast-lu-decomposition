@@ -1,3 +1,5 @@
+# Initial model
+
 flops:
  - compute multiplier for each row and column: n^2
  - multiply and add for every entry: 2n^2
