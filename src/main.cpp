@@ -52,24 +52,25 @@ void chunk_size_tests(){
     omp_sched_guided
     };
   string scheduling_type_names[3] = {"static", "dynamic", "guided"};
-  size_t mat_size = 1024;
 
-  for(size_t j = 0; j < 3; j++){
-    for(size_t i = 1; i < 2050; i *= 2){
-      auto m = generate_matrix(mat_size);
+  for(size_t sched_i = 0; sched_i < 3; sched_i++){
+    for(size_t mat_size = 256; mat_size < 2050; mat_size*=2){
+      for(size_t chunk_size = 1; chunk_size < 2050; chunk_size *= 2){
+        auto m = generate_matrix(mat_size);
 
-      auto start_time = chrono::high_resolution_clock::now();
-      lu_factorize(m, scheduling_types[j], i);
-      auto end_time = chrono::high_resolution_clock::now();
-      auto raw_duration = chrono::duration_cast<chrono::nanoseconds>(
-          end_time - start_time).count();
+        auto start_time = chrono::high_resolution_clock::now();
+        lu_factorize(m, scheduling_types[sched_i], chunk_size);
+        auto end_time = chrono::high_resolution_clock::now();
+        auto raw_duration = chrono::duration_cast<chrono::nanoseconds>(
+            end_time - start_time).count();
 
-      double duration = double(raw_duration) * nanoseconds_to_milliseconds;
-      double duration_seconds = double(raw_duration) * nanoseconds_to_seconds;
-      printf("%s,%lu,%lu,%f,%f\n", 
-             scheduling_type_names[j].c_str(),
-             i, mat_size, duration, 
-             double(i*i)/(10e9*duration_seconds));
+        double duration = double(raw_duration) * nanoseconds_to_milliseconds;
+        double duration_seconds = double(raw_duration) * nanoseconds_to_seconds;
+        printf("%s,%lu,%lu,%f,%f\n", 
+               scheduling_type_names[sched_i].c_str(),
+               chunk_size, mat_size, duration, 
+               double(mat_size*mat_size)/(10e9*duration_seconds));
+      }
     }
   }
 }
