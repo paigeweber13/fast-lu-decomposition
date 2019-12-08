@@ -17,7 +17,7 @@ int main(){
 }
 
 void time_tests(){
-  printf("matrix size,time (ms),\n");
+  printf("matrix size,time (ms),Gigaentries per second\n");
   for(size_t i = 2; i < 1e4; i *= 2){
     auto m = generate_matrix(i);
 
@@ -30,7 +30,8 @@ void time_tests(){
     const double nanoseconds_to_seconds = 1e-9;
     const double nanoseconds_to_milliseconds = 1e-6;
     double duration = double(raw_duration) * nanoseconds_to_milliseconds;
-    printf("%lu,%f\n", i, duration);
+    double duration_seconds = double(raw_duration) * nanoseconds_to_seconds;
+    printf("%lu,%f,%f\n", i, duration, double(i*i)/(10e9*duration_seconds));
   }
 }
 
