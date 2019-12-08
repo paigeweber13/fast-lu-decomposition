@@ -6,6 +6,7 @@ CXXASSEMBLYFLAGS=-S -g -fverbose-asm
 SOURCES=$(wildcard src/*.cpp)
 OBJS=$(SOURCES:.cpp=.o)
 EXEC=lu-decomp
+MAMBA_NODE=mba-c7.uncc.edu
 
 # conan
 CFLAGS          += $(CONAN_CFLAGS)
@@ -30,7 +31,7 @@ test: $(EXEC)
 	./$(EXEC)
 
 mamba: $(EXEC)
-	qsub -q mamba -d $(shell pwd) -l nodes=mba-c8.uncc.edu:ppn=16 -l walltime=01:00:00 $(EXEC).sh
-	# qsub -q mamba -d $(shell pwd) -l nodes=1:ppn=16 -l walltime=01:00:00 $(EXEC).sh
-	# qsub -q mamba -d $(shell pwd) -l nodes=1:ppn=16:gpus=1 -l walltime=01:00:00 $(EXEC).sh
+	qsub -q mamba -d $(shell pwd) -l nodes=$(MAMBA_NODE):ppn=16 -l walltime=01:00:00 $(EXEC).sh
+	# qsub -q mamba -d $(shell pwd) -l nodes=$(MAMBA_NODE):ppn=16 -l walltime=01:00:00 $(EXEC).sh
+	# qsub -q mamba -d $(shell pwd) -l nodes=$(MAMBA_NODE):ppn=16:gpus=1 -l walltime=01:00:00 $(EXEC).sh
 
