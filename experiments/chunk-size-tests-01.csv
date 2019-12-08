@@ -1,5 +1,0 @@
-schedule type,chunk size,matrix size,time (ms),Gigaentries per second
-sequential,0,256,1.235328,0.005305
-sequential,0,512,10.518959,0.002492
-sequential,0,1024,77.818696,0.001347
-sequential,0,2048,1721.990168,0.000244
