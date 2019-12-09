@@ -8,7 +8,7 @@ sequential,0,2048,1721.990168,0.000244
 # best form outer for loop parallelized
  - for matrix size 256, sequential was fastest, regardless of schedule
  - for matrix size 512, sequential was fastest, regardless of schedule
- - for matrix size 1024, schedule(static, 16) outperformed sequential by a
+ - for matrix size 1024, schedule(static, 16) outperformed sequential by
    ~140%. Other schedules performed similarly to sequential.
  - for matrix size 2048, schedule(guided, 16) outperformed sequential by a
    factor of ~2.5. Other schedules also outperformed sequential.
@@ -17,3 +17,10 @@ sequential,0,2048,1721.990168,0.000244
  - in all cases, sequential code outperformed parallel code
 
 # best from collapsed for loops parallelized
+ - for matrix size 256, sequential was fastest, regardless of schedule
+ - for matrix size 512, schedule(static, 16) outperformed sequential by a
+   a factor of ~4.
+ - for matrix size 1024, schedule(static, 16) outperformed sequential by a
+   a factor of ~3.5.
+ - for matrix size 2048, schedule(guided, 32) outperformed sequential by a
+   a factor of ~4.
