@@ -22,7 +22,7 @@ $(EXEC): $(OBJS)
 $(OBJS): $(SOURCES)
 
 assembly: $(FILES)
-	$(CXX) $(CXXFLAGS) $(CXXASSEMBLYFLAGS) $(FILES)
+	$(CXX) $(CXXFLAGS) $(CXXASSEMBLYFLAGS) $(CPPFLAGS) $(SOURCES)
 
 clean:
 	rm -f $(EXEC) $(OBJS)
