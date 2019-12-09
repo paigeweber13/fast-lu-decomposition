@@ -1,6 +1,12 @@
 # output for conan
 build
 
+# jupyter notebook things
+.ipynb_checkpoints
+
+# vscode
+.vscode
+
 # Prerequisites
 *.d
 
