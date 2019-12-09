@@ -7,7 +7,7 @@
 
 using namespace std;
 
-#define DEFAULT_CHUNK_SIZE 128
+#define DEFAULT_CHUNK_SIZE 32
 #define DEFAULT_SCHED_TYPE omp_sched_static
 
 const double nanoseconds_to_seconds = 1e-9;
@@ -21,8 +21,8 @@ void chunk_size_tests();
 int main(){
   // basic_test();
   // randomized_tests();
-  // time_tests();
-  chunk_size_tests();
+  time_tests();
+  // chunk_size_tests();
 }
 
 void time_tests(){
@@ -55,6 +55,7 @@ void chunk_size_tests(){
   const size_t num_iterations = 10;
 
   for(size_t i = 0; i < num_iterations; i++){
+    printf("Doing iteration %lu", i);
     for(size_t sched_i = 0; sched_i < 3; sched_i++){
       for(size_t mat_size = 256; mat_size < 2050; mat_size*=2){
         for(size_t chunk_size = 4; chunk_size < 65; chunk_size++){
