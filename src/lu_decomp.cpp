@@ -16,26 +16,33 @@ void lu_factorize(Matrix &m, omp_sched_t sched_type,
 
 void lu_factorize_sequential(Matrix &m){
   double diag, target, multiplier;
-  size_t n = m[0].size();
+  size_t n = m.size();
+  __m256d a, multiplier_vector, c, result;
 
   // each column depends on the column to the left
-  for (size_t col = 0; col < m[0].size(); col++){
+  for (size_t col = 0; col < n; col++){
     // for each column
     diag = m[col][col];
-    for (size_t row = col+1; row < m.size(); row++){
+    for (size_t row = col+1; row < n; row++){
       // for each row under the diagonal
 
       target = m[row][col];
       multiplier = -target/diag;
-      for (size_t col_2 = col; col_2 < m[0].size(); ){
+      multiplier_vector = _mm256_broadcast_sd(&multiplier);
+      for (size_t col_2 = col; col_2 < n; ){
         // for each column (again) starting at the diagonal and moving right
-
         if (n - col_2 > 3){
+          printf("n: %lu, col_2 %lu, n-col_2 %lu\n", n, col_2, n-col_2);
           // vector code
-          // m[row][col_2] = m[col][col_2] * multiplier + m[row][col_2];
-          // col_2 += 4;
-          m[row][col_2] = m[col][col_2] * multiplier + m[row][col_2];
-          col_2++;
+          a = _mm256_load_pd(&m[col][col_2]);
+          c = _mm256_load_pd(&m[row][col_2]);
+          // fmadd causes segfault
+          // happens as soon as col goes to 1
+          // must be because it's not aligned right??? array as a whole is
+          // aligned but not each individual double?
+          result = _mm256_fmadd_pd(a, multiplier_vector, c);
+          _mm256_store_pd(&m[row][col_2], result);
+          col_2 += 4;
         }
         else {
           m[row][col_2] = m[col][col_2] * multiplier + m[row][col_2];
