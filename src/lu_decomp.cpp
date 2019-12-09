@@ -14,9 +14,9 @@ void lu_factorize(Matrix &m, omp_sched_t sched_type,
   // lu_factorize_parallel(m, sched_type, chunk_size);
 }
 
-void lu_factorize_sequential(Matrix &m, omp_sched_t sched_type,
-                           size_t chunk_size){
+void lu_factorize_sequential(Matrix &m){
   double diag, target, multiplier;
+  size_t n = m[0].size();
 
   // each column depends on the column to the left
   for (size_t col = 0; col < m[0].size(); col++){
@@ -27,9 +27,20 @@ void lu_factorize_sequential(Matrix &m, omp_sched_t sched_type,
 
       target = m[row][col];
       multiplier = -target/diag;
-      for (size_t col_2 = col; col_2 < m[0].size(); col_2++){
+      for (size_t col_2 = col; col_2 < m[0].size(); ){
         // for each column (again) starting at the diagonal and moving right
-        m[row][col_2] = m[col][col_2] * multiplier + m[row][col_2];
+
+        if (n - col_2 > 3){
+          // vector code
+          // m[row][col_2] = m[col][col_2] * multiplier + m[row][col_2];
+          // col_2 += 4;
+          m[row][col_2] = m[col][col_2] * multiplier + m[row][col_2];
+          col_2++;
+        }
+        else {
+          m[row][col_2] = m[col][col_2] * multiplier + m[row][col_2];
+          col_2++;
+        }
       }
 
       m[row][col] = -multiplier;
