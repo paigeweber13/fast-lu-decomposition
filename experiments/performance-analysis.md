@@ -15,5 +15,13 @@ tested a few different places to parallelize. Outer loop and outer loop with
 collapse were both good. Collapse was better. 
 
 measurements: 
- - best (size ):
- - for size 8192:
+ - best (size 1024): 0.004818
+ - for size 8192: 0.000168
+
+This implementation is MUCH slower for small matricies (n < 512 is faster in
+the sequential code) but the biggest size is ~4 times faster
+
+let's make the code choose the sequential version for small values of n
+
+# Vectorizing
+# Store Matrices in column-major order
