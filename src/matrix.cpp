@@ -6,7 +6,8 @@ Matrix generate_matrix(size_t n){
   srand(time(NULL));
   for (size_t i = 0; i < n; i++){
     matrix[i] =
-      vector<double, boost::alignment::aligned_allocator<double, 32>>(n);
+      vector<double, 
+        boost::alignment::aligned_allocator<double, ALIGNMENT>>(n);
     for (size_t j = 0; j < n; j++){
       matrix[i][j] = double(rand()) / double(RAND_MAX);
     }
