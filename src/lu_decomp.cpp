@@ -31,8 +31,8 @@ void lu_factorize_sequential(Matrix &m){
       multiplier_vector = _mm256_broadcast_sd(&multiplier);
       for (size_t col_2 = col; col_2 < n; ){
         // for each column (again) starting at the diagonal and moving right
-        if (n - col_2 > 3){
-          printf("n: %lu, col_2 %lu, n-col_2 %lu\n", n, col_2, n-col_2);
+        if (col_2 % 4 == 0){
+          // printf("n: %lu, col_2 %lu, n-col_2 %lu\n", n, col_2, n-col_2);
           // vector code
           a = _mm256_load_pd(&m[col][col_2]);
           c = _mm256_load_pd(&m[row][col_2]);
