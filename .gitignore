@@ -4,6 +4,9 @@ build
 # jupyter notebook things
 .ipynb_checkpoints
 
+# assembly
+*.s
+
 # vscode
 .vscode
 
