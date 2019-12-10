@@ -10,8 +10,8 @@ void lu_factorize(Matrix &m, omp_sched_t sched_type,
   // else {
   //   lu_factorize_parallel(m, sched_type, chunk_size);
   // }
-  lu_factorize_sequential(m);
-  // lu_factorize_parallel(m, sched_type, chunk_size);
+  // lu_factorize_sequential(m);
+  lu_factorize_parallel(m, sched_type, chunk_size);
 }
 
 void lu_factorize_sequential(Matrix &m){
@@ -29,25 +29,9 @@ void lu_factorize_sequential(Matrix &m){
       target = m[row][col];
       multiplier = -target/diag;
       multiplier_vector = _mm256_broadcast_sd(&multiplier);
-      for (size_t col_2 = col; col_2 < n; ){
+      for (size_t col_2 = col; col_2 < n; col_2++){
         // for each column (again) starting at the diagonal and moving right
-        if (row - col_2 > 3){
-          // printf("n: %lu, col_2 %lu, n-col_2 %lu\n", n, col_2, n-col_2);
-          // vector code
-          a = _mm256_loadu_pd(&m[col][col_2]);
-          c = _mm256_loadu_pd(&m[row][col_2]);
-          // fmadd causes segfault
-          // happens as soon as col goes to 1
-          // must be because it's not aligned right??? array as a whole is
-          // aligned but not each individual double?
-          result = _mm256_fmadd_pd(a, multiplier_vector, c);
-          _mm256_storeu_pd(&m[row][col_2], result);
-          col_2 += 4;
-        }
-        else {
-          m[row][col_2] = m[col][col_2] * multiplier + m[row][col_2];
-          col_2++;
-        }
+        m[row][col_2] = m[col][col_2] * multiplier + m[row][col_2];
       }
 
       m[row][col] = -multiplier;
