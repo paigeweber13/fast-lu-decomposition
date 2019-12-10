@@ -11,7 +11,8 @@ void lu_factorize(Matrix &m, omp_sched_t sched_type,
   //   lu_factorize_parallel(m, sched_type, chunk_size);
   // }
   // lu_factorize_sequential(m);
-  lu_factorize_parallel(m, sched_type, chunk_size);
+  lu_factorize_sequential_vectorized(m);
+  // lu_factorize_parallel(m, sched_type, chunk_size);
 }
 
 void lu_factorize_sequential(Matrix &m){
@@ -35,6 +36,66 @@ void lu_factorize_sequential(Matrix &m){
       m[row][col] = -multiplier;
     }
   }
+}
+
+void lu_factorize_sequential_vectorized(Matrix &m){
+  double diag, target, multiplier;
+  __m256d a, multiplier_vector, c, result;
+  size_t offset;
+  double saved[4] = {0., 0., 0., 0.};
+
+  size_t n = m.size();
+  // Matrix l = generate_matrix(n);
+
+  // each column depends on the column to the left
+  for (size_t col = 0; col < n; col++){
+    // for each column
+    diag = m[col][col];
+    offset = col%4;
+    // printf("col: %lu, col%%4: %lu, col-(col%%4): %lu\n", col, col%4, col-(col%4));
+    for (size_t row = col+1; row < n; row++){
+      // for each row under the diagonal
+
+      target = m[row][col];
+      multiplier = -target/diag;
+      multiplier_vector = _mm256_broadcast_sd(&multiplier);
+
+      // this block does some redundant computation but enables vector
+      // operations
+      {
+        // save things starting at diagonal-offset before overwritting
+        for (size_t i = 0; i < offset; i++){
+          printf("saving to saved[%lu] from m[%lu][%lu]\n",
+            i, row, col-offset+i);
+          saved[i] = m[row][col-offset+i];
+        }
+
+        // incorrect when col_2 is > 3
+        for (size_t col_2 = col - offset; col_2 < n; col_2 += 4){
+          // for every 4th column in this row, do vector operations for all 4 
+          // things
+          a = _mm256_load_pd(&m[col][col_2]);
+          c = _mm256_load_pd(&m[row][col_2]);
+          result = _mm256_fmadd_pd(a, multiplier_vector, c);
+          _mm256_store_pd(&m[row][col_2], result);
+          col_2 += 4;
+        }
+
+        // load back saved things starting at diagonal-offset
+        for (size_t i = 0; i < offset; i++){
+          m[row][col-offset+i] = saved[i];
+        }
+      }
+
+      m[row][col] = -multiplier;
+    }
+  }
+
+  // for(size_t i = 0; i < n; i++){
+  //   for(size_t j = 0; j < i; j++){
+  //     m[i][j] = l[i][j];
+  //   }
+  // }
 }
 
 void lu_factorize_parallel(Matrix &m, omp_sched_t sched_type,

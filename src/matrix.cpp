@@ -49,7 +49,7 @@ bool compare_matrix_with_boost_matrix(Matrix a, ub::matrix<double> b){
         cout << "threshold: " << threshold << endl;
         num_errors++;
       }
-      if (num_errors > 10) break;
+      // if (num_errors > 10) break;
     }
   }
   return same;
