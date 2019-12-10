@@ -17,7 +17,6 @@ void lu_factorize(Matrix &m, omp_sched_t sched_type,
 void lu_factorize_sequential(Matrix &m){
   double diag, target, multiplier;
   size_t n = m.size();
-  __m256d a, multiplier_vector, c, result;
 
   // each column depends on the column to the left
   for (size_t col = 0; col < n; col++){
@@ -28,7 +27,6 @@ void lu_factorize_sequential(Matrix &m){
 
       target = m[row][col];
       multiplier = -target/diag;
-      multiplier_vector = _mm256_broadcast_sd(&multiplier);
       for (size_t col_2 = col; col_2 < n; col_2++){
         // for each column (again) starting at the diagonal and moving right
         m[row][col_2] = m[col][col_2] * multiplier + m[row][col_2];

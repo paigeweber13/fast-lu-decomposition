@@ -1,7 +1,6 @@
 #pragma once
 
 #include <boost/numeric/ublas/lu.hpp>
-#include <immintrin.h>
 #include <omp.h>
 #include <tuple>
 
