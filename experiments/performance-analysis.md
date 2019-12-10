@@ -40,4 +40,21 @@ matrix_size   without vectors   with vectors
 
 in this case, was only using vectors every fourth thing number...
 
+wasn't able to get it working for every iteration, even with loadu/storeu
+
+Is there some way to store everything aligned to a 32-byte boundary? even if
+that means repeat entries?
+
+each double takes 64 bits, that's 8 bytes
+
+E.G.:
+memory address : |0x128 0x136 0x144 0x152 |0x160 0x168 0x176 0x184 |0x192
+matrix entry   : |a1,0  a1,1  a1,2  a1,3  |a1,1  a1,2  a1,3  a1,4  |a1,2
+(pipes indicate desired alignment)
+
+This would take ~4x the memory.... but is it worth it?
+
 # Store Matrices in column-major order
+Don't actually think this will help... Inner loops (that are actually
+parallelized) are operated on column by colum in the same row. Therefore,
+keeping it row-major should give best locality
