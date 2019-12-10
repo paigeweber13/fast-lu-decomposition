@@ -69,5 +69,13 @@ So instead of starting at the diagonal, let's start at the greatest multiple of
 
 successfully vectorized
 
-vectorized code is almost identically fast (for sequential) and slower for
-parallel (probably because you can't collapse for loop)
+vectorized code is almost identically fast (for sequential) and faster in some
+cases, slower in others for parallel
+
+# next steps
+ - get csvs of results for 
+   - sequential
+	 - parallel
+	 - sequential vectorized
+	 - parallel vectorized
+ - run intel vtune on parallel vectorized for comparison
