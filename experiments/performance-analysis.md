@@ -66,3 +66,8 @@ removing redundant computation will.
 
 So instead of starting at the diagonal, let's start at the greatest multiple of
 4 that is less than the column index.
+
+successfully vectorized
+
+vectorized code is almost identically fast (for sequential) and slower for
+parallel (probably because you can't collapse for loop)
