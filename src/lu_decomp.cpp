@@ -12,7 +12,7 @@ void lu_factorize(Matrix &m, omp_sched_t sched_type,
   // }
   // lu_factorize_sequential(m);
   // lu_factorize_sequential_vectorized(m);
-  lu_factorize_parallel(m, sched_type, chunk_size);
+  // lu_factorize_parallel(m, sched_type, chunk_size);
   lu_factorize_parallel_vectorized(m, sched_type, chunk_size);
 }
 
