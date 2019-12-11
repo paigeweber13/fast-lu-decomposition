@@ -17,8 +17,8 @@ __global__ void luDecomposition();
 
 
 /* Host Functions Declarations Called By Host */
-__host__ void generateMatrixData(const double *, const int32_t *);
-__host__ void printMatrix(const double *, const int32_t *);
+__host__ void generateMatrixData(double *, const int *);
+__host__ void printMatrix(const double *, const int *);
 
 
 
@@ -40,21 +40,19 @@ int main(int argc, char **argv)
   }
 
   // Parse Command Line
-  int32_t dimension = atoi(argv[1]);
+  int dimension = atoi(argv[1]);
 
   // Matrix data
-  n = dimension * dimension;
+  int n = dimension * dimension;
 
   // Allocate Host Data
-  double *matrix = calloc(n, sizeof(double));
-  double *upperMatrix = calloc(n, sizeof(double));
-  double *lowerMatrix = calloc(n, sizeof(double));
+  double *matrix = (double *)calloc(n, sizeof(double));
+  double *upperMatrix = (double *)calloc(n, sizeof(double));
+  double *lowerMatrix = (double *)calloc(n, sizeof(double));
 
   // Generate Matrix data 
   generateMatrixData(matrix, &n);
-  #if DEBUG == 1
-    printMatrix(matrix, dimension);
-  #endif
+  printMatrix(matrix, &dimension);
 
   // Allocate Device Data
   double *d_matrix;
@@ -68,7 +66,7 @@ int main(int argc, char **argv)
   fprintf(cudaerr, "Allocate d_lowerMatrix: %s\n", cudaGetErrorString(cudaGetLastError()));
 
   // Cuda Stuff
-  int32_t block = 256;
+  int block = 256;
 
   // Start Timer
   std::chrono::time_point<std::chrono::steady_clock> start = std::chrono::steady_clock::now();
@@ -81,7 +79,7 @@ int main(int argc, char **argv)
   cudaMemcpy(d_lowerMatrix, lowerMatrix, sizeof(double) * n, cudaMemcpyHostToDevice);
   fprintf(cudaerr, "Copy lowerMatrix to d_lowerMatrix: %s\n", cudaGetErrorString(cudaGetLastError()));
 
-  luDecomposition<<<(n+block-1)/block,block>>>(d_array, d_poly, d_n, d_degree);
+  //luDecomposition<<<(n+block-1)/block,block>>>();
   cudaDeviceSynchronize();
   fprintf(cudaerr, "Synchronize after LU Decomposition: %s\n", cudaGetErrorString(cudaGetLastError()));
 
@@ -110,7 +108,7 @@ int main(int argc, char **argv)
 
   // Deallocate Host Data
   free(matrix);
-  free(uppermatrix);
+  free(upperMatrix);
   free(lowerMatrix);
 
   // Close Cuda Error Output Stream
@@ -123,15 +121,10 @@ int main(int argc, char **argv)
 
 /* Host To Device Function Definitions */
 
-__global__ void polynomialExpansion(float *array, const float *poly, const int32_t *n, const int32_t *degree)
+__global__ void luDecomposition()
 {
-  int32_t index = threadIdx.x + blockIdx.x * blockDim.x;
+  int index = threadIdx.x + blockIdx.x * blockDim.x;
   //printf("Block ID: %4d | Block Dim: %4d | PE Index:  %4d\n", blockIdx.x, blockDim.x, index);
-  if(index < *n) {
-    //printf("array: %f\n", array[index]);
-    array[index] = polynomial(&array[index], &poly[index], degree);
-    //printf("array: %f\n", array[index]);
-  }
 
   return;
 }
@@ -140,27 +133,23 @@ __global__ void polynomialExpansion(float *array, const float *poly, const int32
 
 /* Host To Host Function Definitions */
 
-__host__ generateMatrixData(const double *matrix, const int32_t *n)
+__host__ void generateMatrixData(double *matrix, const int *n)
 {
-  for(int32_t i = 0; i < n; ++i) {
-    #if DEBUG == 1
-      matrix[i] = rand() % 99 + 1;
-    #else
-      matrix[i] = rand() % 999999 + 1;
-    #endif
+  for(int i = 0; i < *n; ++i) {
+    matrix[i] = rand() % 99 + 1;
   }
  
   return;
 }
 
-__host__ printMatrix(const double *matrix, const int32_t *dimension)
+__host__ void printMatrix(const double *matrix, const int *dimension)
 {
   fprintf(stdout, "\nOriginal Matrix:\n");
-  for(int32_t i = 0; i < dimension; ++i) {
-    for(int32_t j = 0; j < dimension; ++j) {
-      fprintf(stdout, "%f ", matrix[i*dimension+j]);
+  for(int i = 0; i < *dimension; ++i) {
+    for(int j = 0; j < *dimension; ++j) {
+      fprintf(stdout, "%f ", matrix[i*(*dimension)+j]);
     }
-    fprintf(stdout, "\n"_'
+    fprintf(stdout, "\n");
   }
   
   return;
