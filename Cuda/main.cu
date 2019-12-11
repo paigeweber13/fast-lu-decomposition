@@ -8,7 +8,7 @@
 
 
 /* Device Functions Declarations Called By Host */
-__global__ void luDecomposition(float *, const float *, const int32_t *, const int32_t *);
+__global__ void luDecomposition();
 
 
 
@@ -67,50 +67,51 @@ int main(int argc, char **argv)
   cudaMalloc((void **)&d_lowerMatrix, sizeof(double) * n);
   fprintf(cudaerr, "Allocate d_lowerMatrix: %s\n", cudaGetErrorString(cudaGetLastError()));
 
+  // Cuda Stuff
+  int32_t block = 256;
+
   // Start Timer
   std::chrono::time_point<std::chrono::steady_clock> start = std::chrono::steady_clock::now();
 
   // Copy Host Data To Device Memory
   cudaMemcpy(d_matrix, matrix, sizeof(double) * n, cudaMemcpyHostToDevice);
-  fprintf(cudaerr, "Copy array to d_matrix: %s\n", cudaGetErrorString(cudaGetLastError()));
+  fprintf(cudaerr, "Copy matrix to d_matrix: %s\n", cudaGetErrorString(cudaGetLastError()));
   cudaMemcpy(d_upperMatrix, upperMatrix, sizeof(double) * n, cudaMemcpyHostToDevice);
-  fprintf(cudaerr, "Copy poly to d_upperMatrix: %s\n", cudaGetErrorString(cudaGetLastError()));
+  fprintf(cudaerr, "Copy upperMatrix to d_upperMatrix: %s\n", cudaGetErrorString(cudaGetLastError()));
   cudaMemcpy(d_lowerMatrix, lowerMatrix, sizeof(double) * n, cudaMemcpyHostToDevice);
-  fprintf(cudaerr, "Copy poly to d_lowerMatrix: %s\n", cudaGetErrorString(cudaGetLastError()));
+  fprintf(cudaerr, "Copy lowerMatrix to d_lowerMatrix: %s\n", cudaGetErrorString(cudaGetLastError()));
 
-  polynomialExpansion<<<(n+block-1)/block,block>>>(d_array, d_poly, d_n, d_degree);
+  luDecomposition<<<(n+block-1)/block,block>>>(d_array, d_poly, d_n, d_degree);
   cudaDeviceSynchronize();
-  fprintf(cudaerr, "Synchronize after polynomial expansion: %s\n", cudaGetErrorString(cudaGetLastError()));
+  fprintf(cudaerr, "Synchronize after LU Decomposition: %s\n", cudaGetErrorString(cudaGetLastError()));
 
   // Copy Device Data to Host Memory
-  cudaMemcpy(array, d_matrix, sizeof(float) * n, cudaMemcpyDeviceToHost);
-  fprintf(cudaerr, "Copy d_matrix to array: %s\n", cudaGetErrorString(cudaGetLastError()));
-  cudaMemcpy(poly, d_upperMatrix, sizeof(float) * n, cudaMemcpyDeviceToHost);
-  fprintf(cudaerr, "Copy d_upperMatrix to poly: %s\n", cudaGetErrorString(cudaGetLastError()));
-  cudaMemcpy(poly, d_lowerMatrix, sizeof(float) * n, cudaMemcpyDeviceToHost);
-  fprintf(cudaerr, "Copy d_lowerMatrix to poly: %s\n", cudaGetErrorString(cudaGetLastError()));
+  cudaMemcpy(matrix, d_matrix, sizeof(double) * n, cudaMemcpyDeviceToHost);
+  fprintf(cudaerr, "Copy d_matrix to matrix: %s\n", cudaGetErrorString(cudaGetLastError()));
+  cudaMemcpy(upperMatrix, d_upperMatrix, sizeof(double) * n, cudaMemcpyDeviceToHost);
+  fprintf(cudaerr, "Copy d_upperMatrix to upperMatrix: %s\n", cudaGetErrorString(cudaGetLastError()));
+  cudaMemcpy(lowerMatrix, d_lowerMatrix, sizeof(double) * n, cudaMemcpyDeviceToHost);
+  fprintf(cudaerr, "Copy d_lowerMatrix to lowerMatrix: %s\n", cudaGetErrorString(cudaGetLastError()));
 
   // End Timer
   std::chrono::time_point<std::chrono::steady_clock> end = std::chrono::steady_clock::now();
   std::chrono::duration<double> time = end - start;
 
   // Deallocate Device Data
-  cudaFree(d_n);
-  fprintf(cudaerr, "Free d_n: %s\n", cudaGetErrorString(cudaGetLastError()));
-  cudaFree(d_degree);
-  fprintf(cudaerr, "Free d_degree: %s\n", cudaGetErrorString(cudaGetLastError()));
-  cudaFree(d_array);
-  fprintf(cudaerr, "Free d_array: %s\n", cudaGetErrorString(cudaGetLastError()));
-  cudaFree(d_poly);
-  fprintf(cudaerr, "Free d_poly: %s\n", cudaGetErrorString(cudaGetLastError()));
+  cudaFree(d_matrix);
+  fprintf(cudaerr, "Free d_matrix: %s\n", cudaGetErrorString(cudaGetLastError()));
+  cudaFree(d_upperMatrix);
+  fprintf(cudaerr, "Free d_upperMatrix: %s\n", cudaGetErrorString(cudaGetLastError()));
+  cudaFree(d_lowerMatrix);
+  fprintf(cudaerr, "Free d_lowerMatrix: %s\n", cudaGetErrorString(cudaGetLastError()));
 
-  // Print Output
-  fprintf(stdout, "\nValue: %.9f\n", array[0]);
-  fprintf(stdout, "\nTime: %14.9f\n", time.count());
+  // Print Time
+  fprintf(stdout, "\n%7d\t%14.9f\n", n, time.count());
 
   // Deallocate Host Data
-  delete [] array;
-  delete [] poly;
+  free(matrix);
+  free(uppermatrix);
+  free(lowerMatrix);
 
   // Close Cuda Error Output Stream
   fclose(cudaerr);
