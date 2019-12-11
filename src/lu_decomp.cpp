@@ -2,18 +2,18 @@
 
 void lu_factorize(Matrix &m, omp_sched_t sched_type,
                            size_t chunk_size){
-  // todo: start using this:
-  // const size_t threshold = 512;
-  // if (m.size() < threshold){
-  //   lu_factorize_sequential(m);
-  // }
-  // else {
-  //   lu_factorize_parallel(m, sched_type, chunk_size);
-  // }
+  const size_t threshold = 512;
+  if (m.size() < threshold){
+    lu_factorize_sequential(m);
+  }
+  else {
+    lu_factorize_parallel(m, sched_type, chunk_size);
+  }
+
   // lu_factorize_sequential(m);
   // lu_factorize_sequential_vectorized(m);
   // lu_factorize_parallel(m, sched_type, chunk_size);
-  lu_factorize_parallel_vectorized(m, sched_type, chunk_size);
+  // lu_factorize_parallel_vectorized(m, sched_type, chunk_size);
 }
 
 void lu_factorize_sequential(Matrix &m){
