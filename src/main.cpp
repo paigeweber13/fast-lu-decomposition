@@ -31,7 +31,7 @@ void time_tests(){
     auto m = generate_matrix(i);
 
     auto start_time = chrono::high_resolution_clock::now();
-    lu_factorize(m);
+    lu_factorize(m, DEFAULT_SCHED_TYPE, DEFAULT_CHUNK_SIZE);
     auto end_time = chrono::high_resolution_clock::now();
     auto raw_duration = chrono::duration_cast<chrono::nanoseconds>(
         end_time - start_time).count();
