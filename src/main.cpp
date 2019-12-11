@@ -26,61 +26,12 @@ int main(){
 }
 
 void time_tests(){
-  printf("\n\nsequential\n");
   printf("matrix size,time (ms),Gigaentries per second\n");
   for(size_t i = 2; i < 1e4; i *= 2){
     auto m = generate_matrix(i);
 
     auto start_time = chrono::high_resolution_clock::now();
-    lu_factorize_sequential(m);
-    auto end_time = chrono::high_resolution_clock::now();
-    auto raw_duration = chrono::duration_cast<chrono::nanoseconds>(
-        end_time - start_time).count();
-
-    double duration = double(raw_duration) * nanoseconds_to_milliseconds;
-    double duration_seconds = double(raw_duration) * nanoseconds_to_seconds;
-    printf("%lu,%f,%f\n", i, duration, double(i*i)/(10e9*duration_seconds));
-  }
-
-  printf("\n\nparallel\n");
-  printf("matrix size,time (ms),Gigaentries per second\n");
-  for(size_t i = 2; i < 1e4; i *= 2){
-    auto m = generate_matrix(i);
-
-    auto start_time = chrono::high_resolution_clock::now();
-    lu_factorize_parallel(m, DEFAULT_SCHED_TYPE, DEFAULT_CHUNK_SIZE);
-    auto end_time = chrono::high_resolution_clock::now();
-    auto raw_duration = chrono::duration_cast<chrono::nanoseconds>(
-        end_time - start_time).count();
-
-    double duration = double(raw_duration) * nanoseconds_to_milliseconds;
-    double duration_seconds = double(raw_duration) * nanoseconds_to_seconds;
-    printf("%lu,%f,%f\n", i, duration, double(i*i)/(10e9*duration_seconds));
-  }
-
-  printf("\n\nsequential vectorized\n");
-  printf("matrix size,time (ms),Gigaentries per second\n");
-  for(size_t i = 2; i < 1e4; i *= 2){
-    auto m = generate_matrix(i);
-
-    auto start_time = chrono::high_resolution_clock::now();
-    lu_factorize_sequential_vectorized(m);
-    auto end_time = chrono::high_resolution_clock::now();
-    auto raw_duration = chrono::duration_cast<chrono::nanoseconds>(
-        end_time - start_time).count();
-
-    double duration = double(raw_duration) * nanoseconds_to_milliseconds;
-    double duration_seconds = double(raw_duration) * nanoseconds_to_seconds;
-    printf("%lu,%f,%f\n", i, duration, double(i*i)/(10e9*duration_seconds));
-  }
-
-  printf("\n\nparallel vectorized\n");
-  printf("matrix size,time (ms),Gigaentries per second\n");
-  for(size_t i = 2; i < 1e4; i *= 2){
-    auto m = generate_matrix(i);
-
-    auto start_time = chrono::high_resolution_clock::now();
-    lu_factorize_parallel_vectorized(m, DEFAULT_SCHED_TYPE, DEFAULT_CHUNK_SIZE);
+    lu_factorize(m);
     auto end_time = chrono::high_resolution_clock::now();
     auto raw_duration = chrono::duration_cast<chrono::nanoseconds>(
         end_time - start_time).count();
