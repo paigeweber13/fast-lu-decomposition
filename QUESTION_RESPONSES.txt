@@ -2,23 +2,34 @@ This is a summary of responses to major questions. These are answered in more
 detail in `fast-lu-decomp-presentation.pdf` and in the files found in 
 `./experiments/plots`.
 
--performance model
+-Performance Model
   - for matrix of size n
   - 3n^2 flops
   - 2n^2 * (datatype size) bytes r/w
   - flop limit: 566 Giga-entries/second
   - entries/s mem limit: 8.5 Giga-entries/second
 
--what optimization on CPU were necessary
+-What optimization on CPU were necessary?
   - parallelizing
   - experimenting with schedules
   - experimenting with for loop placement
   - experimenting with chunk size
 
--How GPU implementation happens
-  - Vince
-
--performance obtained and comparison to model
+-CPU Performance obtained and comparison to model
   - modeled: 8.5 Gigaentries/second
   - actual: between 0.5 Megaentries/second and 20 Megaentries/second
   - still about 2-3 orders of magnitude off
+
+-How GPU implementation was attempted?
+  - CUDA
+  - Has two important kernals (transform and elimination)
+  - Method:
+    = loop over dimensions:
+      + send pivot (iteration number) to GPU
+      + transform: produces lower matrix of pivot column (this can be parallel)
+      + (sync GPU)
+      + elimination: uses the pivot column of lower matrix to update all row lower
+                     of pivit in source matrix, this becomes the upper matrix
+                     (this can also be parallel)
+      +(sync GPU)
+  - NOTE: *final implementation did not produce correct answers.*
