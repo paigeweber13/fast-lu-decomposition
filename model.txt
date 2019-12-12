@@ -37,9 +37,9 @@ on CPU:
  - measured values:
    - 1.7 TFLOPS
    - 136 GB/s 
- - entries/s flop limit = 1.7e12/4
-                        = 425e9 entries/second
-                        = 425 Giga-entries/second
+ - entries/s flop limit = 1.7e12/3
+                        = 566e9 entries/second
+                        = 566 Giga-entries/second
  - entries/s mem limit = 136e9/(2 * datatype_size)
                        = 136e9/16
                        = 8.5e9 entries/second
