@@ -58,3 +58,24 @@ This would take ~4x the memory.... but is it worth it?
 Don't actually think this will help... Inner loops (that are actually
 parallelized) are operated on column by colum in the same row. Therefore,
 keeping it row-major should give best locality
+
+# Vectorizing round 2
+So the reason we start at the column of the diagonal is because we don't want
+to do redundant computation. But vectorizing is going to help more than
+removing redundant computation will.
+
+So instead of starting at the diagonal, let's start at the greatest multiple of
+4 that is less than the column index.
+
+successfully vectorized
+
+vectorized code is almost identically fast (for sequential) and faster in some
+cases, slower in others for parallel
+
+# next steps
+ - get csvs of results for 
+   - sequential
+	 - parallel
+	 - sequential vectorized
+	 - parallel vectorized
+ - run intel vtune on parallel vectorized for comparison
